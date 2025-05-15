@@ -196,4 +196,64 @@ public class HomeService : IHomeService
         return concerts;
     }
 
+    public List<BookTicketViewModel> GetAllBooking(string filter)
+    {
+        List<BookTicketViewModel> bookTickets = new();
+        int UserId = loginService.GetUserId();
+        if (UserId == 0)
+        {
+            return bookTickets;
+        }
+
+        bookTickets = filter switch
+        {
+            "past_bookings" => unitOfWork.BookTicketRepository
+                .GetAll(b => new BookTicketViewModel
+                {
+                    Title = b.Concert.Title,
+                    ConcertTime = b.Concert.ConcertTime,
+                    TicketPrice = b.Concert.TicketPrice,
+                    ArtistName = b.Concert.ArtistName,
+                    AvailableSeats = b.Concert.AvailableSeats,
+                    Description = b.Concert.Description,
+                    Venue = b.Concert.Venue,
+                    UserId = UserId,
+                    TotalTicketBuy = b.TotalTicketBuy,
+                    TotalPrice = b.TotalPrice,
+                    DiscountPrice = b.DiscountPrice
+                }, b => b.UserId == UserId && !b.IsDeleted && b.Concert.ConcertTime.Date <= DateTime.Now),
+            "upcoming_bookings" => unitOfWork.BookTicketRepository
+                .GetAll(b => new BookTicketViewModel
+                {
+                    Title = b.Concert.Title,
+                    ConcertTime = b.Concert.ConcertTime,
+                    TicketPrice = b.Concert.TicketPrice,
+                    ArtistName = b.Concert.ArtistName,
+                    AvailableSeats = b.Concert.AvailableSeats,
+                    Description = b.Concert.Description,
+                    Venue = b.Concert.Venue,
+                    UserId = UserId,
+                    TotalTicketBuy = b.TotalTicketBuy,
+                    TotalPrice = b.TotalPrice,
+                    DiscountPrice = b.DiscountPrice
+                }, b => b.UserId == UserId && !b.IsDeleted && b.Concert.ConcertTime.Date > DateTime.Now),
+            _ => unitOfWork.BookTicketRepository
+                .GetAll(b => new BookTicketViewModel
+                {
+                    Title = b.Concert.Title,
+                    ConcertTime = b.Concert.ConcertTime,
+                    TicketPrice = b.Concert.TicketPrice,
+                    ArtistName = b.Concert.ArtistName,
+                    AvailableSeats = b.Concert.AvailableSeats,
+                    Description = b.Concert.Description,
+                    Venue = b.Concert.Venue,
+                    UserId = UserId,
+                    TotalTicketBuy = b.TotalTicketBuy,
+                    TotalPrice = b.TotalPrice,
+                    DiscountPrice = b.DiscountPrice
+                }, b => b.UserId == UserId && !b.IsDeleted),
+        };
+        return bookTickets;
+    }
+
 }

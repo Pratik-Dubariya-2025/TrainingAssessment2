@@ -30,35 +30,30 @@
                 <h3 class="text-white">BookYourShow</h3>
                 <div class="d-flex justify-content-start align-items-center gap-2">
                     <a asp-action="Index" asp-controller="Home" class="nav-link text-white">Home</a>
-                    <a asp-action="Privacy" asp-controller="Home" class="nav-link text-white">Privacy</a>
+                    @if(User.IsInRole("2"))
+                    {
+                        <a asp-action="MyBookings" asp-controller="Home" class="nav-link text-white">My Bookings</a>
+                    }
                 </div>
             </div>
             <div class="ms-auto d-flex justify-content-end align-items-center gap-3">
                 <div class="ms-auto dropdown">
                     <div class="me-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img height="50px" width="50px" class="rounded-circle"
-                        src="~/images/Default_pfp.svg.png" alt="Default_pfp" />
+                        src="~/images/Default_pfp.svg.png" alt="" />
                     </div>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a href="#" class="dropdown-item d-flex align-items-center">
+                            <a href="" class="dropdown-item d-flex align-items-center">
                                 <div>
                                     <img height="40px" width="40px" class="rounded-circle"
-                                    src="~/images/Default_pfp.svg.png" alt="Default_pfp" />
+                                    src="~/images/Default_pfp.svg.png" alt="" />
                                 </div>
                                 <div>@User?.Identity?.Name</div>
                             </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center">
-                                <div class="me-1 me-sm-2">
-                                    <i class="bi bi-person-circle"></i>
-                                </div>
-                                <div>My Profile</div>
-                            </a>
                         </li>
                         @if(User != null && User.Identity != null && User.Identity.IsAuthenticated){
                             <li>

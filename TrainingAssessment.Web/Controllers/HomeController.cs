@@ -22,8 +22,7 @@ public class HomeController : Controller
         return View();
     }
 
-    [Authorize(Roles = "1")]
-    public IActionResult Privacy()
+    public IActionResult MyBookings()
     {
         return View();
     }
@@ -107,8 +106,13 @@ public class HomeController : Controller
         return PartialView("_BuyTicket", bookTicketViewModel);
     }
 
-    public IActionResult GetAllConcerts()
+    public IActionResult GetAllConcerts(DateTime filterDate, string search)
     {
         return PartialView("_ListAllConcert", homeService.GetAllConcerts());
+    }
+
+    public IActionResult GetAllBookings(string filter)
+    {
+        return PartialView("_ListAllBookings", homeService.GetAllBooking(filter));
     }
 }

@@ -2,13 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    .form-control:focus{
+        box-shadow: none;
+        border-color: #dee2e6;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+</style>
 <div class="container">
     <div class="w-100 d-flex justify-content-between align-items-center mb-3">
         <div>
             <h1>Concerts</h1>
         </div>
         <div>
-            <button class="btn btn-primary" onclick="OpenAddEditConcertModal()">+ Concert</button>
+            @if(User.IsInRole("1"))
+            {
+                <button class="btn btn-primary" onclick="OpenAddEditConcertModal()">+ Concert</button>
+            }
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-end align-items-center gap-2 mb-3">
+        <div class="form-floating position-relative">
+            <input type="text" class="form-control" style="padding-right: 2rem;" placeholder="Search" id="searchConcerts" required />
+            <label for="searchConcerts">Search</label>
+            <button type="button" class="btn position-absolute" style="top: 10px; right: 0px;"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="form-floating">
+            <input type="date" class="form-control" id="filterConcertTime"/>
+            <label for="filterConcertTime">Concert Time</label>
         </div>
     </div>
     <div id="listAllConcerts" class="w-100 p-2"></div>
@@ -17,11 +43,14 @@
 <div id="modalContainer"></div>
 
 <script>
+    let search = "";
+    let filterDate = null;
 
-    function OpenAddEditConcertModal(){
+    function OpenAddEditConcertModal(Id = 0){
         $.ajax({
             url:'/Home/OpenAddEditConcertModal',
             type:'GET',
+            data:{ Id },
             success: function (data){
                 if(data.success!=false){
                     $("#modalContainer").html(data);
@@ -53,10 +82,29 @@
         });
     }
 
+    function OpenConcertDetailModal(Id) {
+        $.ajax({
+            url:'/Home/OpenConcertDetailModal',
+            type:'GET',
+            data:{ Id },
+            success: function (data){
+                if(data.success!=false){
+                    $("#modalContainer").html(data);
+                    var myModal = new bootstrap.Modal(document.getElementById('concertDetails'));
+                    myModal.show();
+                } 
+            },
+            error: function(xhr,status,error){
+                toastr.error(error);
+            }
+        });
+    }
+
     function GetAllConcerts(){
         $.ajax({
             url: '/Home/GetAllConcerts',
             type: 'GET',
+            data: { filterDate, search },
             success: function (data) {
                 if(data.success !== false){
                     $("#listAllConcerts").html(data);
@@ -70,5 +118,25 @@
 
     $(document).ready(function(){
         GetAllConcerts();
+
+        $("#searchConcerts").blur(function(){
+            search = $(this).val();
+        });
+
+        $("#filterConcertTime").change(function(){
+            filterDate = $(this).val();
+            let filterDateCompare = new Date(filterDate).toLocaleDateString();
+
+            let currentDate = new Date(Date.now()).toLocaleDateString();
+
+            if (filterDate && filterDateCompare <= currentDate) {
+                toastr.error("Cannot filter past concerts.");
+                event.stopPropagation();
+                return;
+            }
+
+
+        });
+
     });
 </script>

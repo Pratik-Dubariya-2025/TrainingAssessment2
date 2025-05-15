@@ -26,7 +26,14 @@
                             <div class="text-end" >@concert.ConcertTime.ToString("g")</div>
                         </div>
                         <div class="w-100 d-flex justify-content-between align-items-center gap-2">
-                            <button class="w-100 btn btn-primary" onclick="OpenBuyTicketModal(@concert.Id)">Buy</button>
+                            @if(User.IsInRole("1"))
+                            {
+                                <button class="w-100 btn btn-primary" onclick="OpenAddEditConcertModal(@concert.Id)">Edit</button>
+                            }
+                            else
+                            {
+                                <button class="w-100 btn btn-primary" onclick="OpenBuyTicketModal(@concert.Id)">Buy</button>
+                            }
                             <button class="w-100 btn btn-secondary" onclick="OpenConcertDetailModal(@concert.Id)">Details</button>
                         </div>
                     </div>
@@ -39,28 +46,3 @@
         <div class="text-center"><h1>There are no concerts</h1></div>
     }
 </div>
-
-<script>
-
-    function OpenConcertDetailModal(Id) {
-        $.ajax({
-            url:'/Home/OpenConcertDetailModal',
-            type:'GET',
-            data:{ Id },
-            success: function (data){
-                if(data.success!=false){
-                    $("#modalContainer").html(data);
-                    var myModal = new bootstrap.Modal(document.getElementById('concertDetails'));
-                    myModal.show();
-                } 
-            },
-            error: function(xhr,status,error){
-                toastr.error(error);
-            }
-        });
-    }
-
-    $(document).ready(function(){
-
-    });
-</script>

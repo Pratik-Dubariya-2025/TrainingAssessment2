@@ -10,4 +10,5 @@ public interface IHomeService
     ConcertViewModel? GetConcertViewModelById(int Id);
     BookTicketViewModel? GetBookTicketViewModelByConcertId(int concertId);
     List<ConcertViewModel> GetAllConcerts();
+    List<BookTicketViewModel> GetAllBooking(string filter);
 }
