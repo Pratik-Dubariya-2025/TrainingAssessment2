@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookYourShow</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TrainingAssessment.Web.styles.css" asp-append-version="true" />
+
+    @* validation script *@
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    @* bootstrap and jquery js file *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Toastr and jQuery scripts -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    @* Toaster *@
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+</head>
+<body class="">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-xl" style="background-color: #1B74B0;">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-start align-items-center gap-3">
+                <h3 class="text-white">BookYourShow</h3>
+                <div class="d-flex justify-content-start align-items-center gap-2">
+                    <a asp-action="Index" asp-controller="Home" class="nav-link text-white">Home</a>
+                    <a asp-action="Privacy" asp-controller="Home" class="nav-link text-white">Privacy</a>
+                </div>
+            </div>
+            <div class="ms-auto d-flex justify-content-end align-items-center gap-3">
+                <div class="ms-auto dropdown">
+                    <div class="me-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img height="50px" width="50px" class="rounded-circle"
+                        src="~/images/Default_pfp.svg.png" alt="Default_pfp" />
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a href="#" class="dropdown-item d-flex align-items-center">
+                                <div>
+                                    <img height="40px" width="40px" class="rounded-circle"
+                                    src="~/images/Default_pfp.svg.png" alt="Default_pfp" />
+                                </div>
+                                <div>@User?.Identity?.Name</div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center">
+                                <div class="me-1 me-sm-2">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <div>My Profile</div>
+                            </a>
+                        </li>
+                        @if(User != null && User.Identity != null && User.Identity.IsAuthenticated){
+                            <li>
+                                <a role="button" data-bs-toggle="modal" data-bs-target="#logout-modal" class="dropdown-item d-flex align-items-center">
+                                    <div class="me-1 me-sm-2">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </div>
+                                    <div>Log out</div>
+                                </a>
+                            </li>
+                        } else {
+                            <li>
+                                <a asp-action="Index" asp-controller="Login" class="dropdown-item d-flex align-items-center">
+                                    <div class="me-1 me-sm-2">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </div>
+                                    <div>LogIn</div>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar END -->
+    <div class="h-100 w-100 container-fluid px-3 pb-3">
+            @RenderBody()
+    </div>
+
+    <!-- LOGOUT MODAL START -->
+    <div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="modal1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title fw-bolder" style="color: #01010199;" id="exampleModalLabel">Delete
+                        Confirmation</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    <div class="text-warning"><i class="fs-3 bi bi-exclamation-triangle-fill"></i></div>
+                    <div class="fw-medium" style="color: #01010199;">Are you sure you want to logout?
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center align-items-center">
+                    <a asp-action="Logout" asp-controller="Login" class="yes-btn btn text-white">YES</a>
+                    <a class="cancel-btn btn" data-bs-dismiss="modal">NO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOGOUT MODAL END -->
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Toastr notification rendering -->
+    @if (TempData["error"] != null)
+    {
+        <script type="text/javascript">
+            toastr.error('@TempData["error"]');
+        </script>
+    }
+
+    @if (TempData["success"] != null)
+    {
+        <script type="text/javascript">
+            toastr.success('@TempData["success"]');
+        </script>
+    }
+</body>
+</html>

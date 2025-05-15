@@ -1,0 +1,20 @@
+@{
+    Layout = "_ErrorLayout";
+}
+
+<div class="h-100">
+    <div class="h-100 container-fluid" style="background-color: #DAF0F8;">
+        <div class="h-100 pb-5 d-flex flex-column justify-content-center align-items-center">
+            <div class="fw-bold" style="color: #006CAC; font-size: 10rem;">
+                @ViewData["StatusCode"]
+            </div>
+            <div class="fw-bold mb-5" style="color: #006CAC; font-size: 5rem;">
+                @ViewData["ErrorMessage"]
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-4">Oops, something went wrong.</div>
+                <div style="color: #006CAC;">Please try again later or contact support if the issue persists.</div>
+            </div>
+        </div>
+    </div>
+</div>

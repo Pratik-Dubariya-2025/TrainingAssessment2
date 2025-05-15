@@ -1,0 +1,37 @@
+@model LoginViewModel;
+
+<style>
+    .form-control:focus{
+        box-shadow: none;
+    }
+</style>
+<div class="container-md h-100">
+    <div class="w-100 d-flex justify-content-start align-items-center mb-3">
+        <h1>Login</h1>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <form class="w-100 d-flex flex-column justify-content-around align-items-center"
+            asp-action="Index" asp-controller="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div class="w-100 form-outline position-relative">
+                <input type="text" class="form-control" id="login-email" asp-for="Email" placeholder="Email*" />
+                <i class="bi bi-person-fill"></i>
+                <span class="ms-2 text-danger" asp-validation-for="Email"></span>
+            </div>
+            <div class="w-100 form-outline position-relative ">
+                <input type="password" class="form-control" asp-for="Password" id="password" placeholder="Password*" />
+                <i id="toggle-eye" class="bi bi-eye-slash-fill"></i>
+                <span class="ms-2 text-danger" asp-validation-for="Password"></span>
+            </div>
+            <div class="mb-3 w-100 d-flex justify-content-start align-items-center">
+                <div class="w-100 input-group d-flex align-items-center">
+                    <input class="me-1" type="checkbox" asp-for="RememberMe" value="true" />
+                    <label class="" asp-for="RememberMe">Remember Me</label>
+                </div>
+            </div>
+            <input type="hidden" value="@ViewBag.returnUrl" name="returnUrl"/>
+            <button class="w-100 btn py-1"  style="background-color: #1B74B0; color: white;" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
