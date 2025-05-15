@@ -121,6 +121,7 @@
 
         $("#searchConcerts").blur(function(){
             search = $(this).val();
+            GetAllConcerts();
         });
 
         $("#filterConcertTime").change(function(){
@@ -134,8 +135,7 @@
                 event.stopPropagation();
                 return;
             }
-
-
+            GetAllConcerts();
         });
 
     });

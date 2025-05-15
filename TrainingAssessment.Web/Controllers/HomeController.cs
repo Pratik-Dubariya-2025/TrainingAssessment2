@@ -106,9 +106,13 @@ public class HomeController : Controller
         return PartialView("_BuyTicket", bookTicketViewModel);
     }
 
-    public IActionResult GetAllConcerts(DateTime filterDate, string search)
+    public IActionResult GetAllConcerts(DateTime? filterDate, string? search)
     {
-        return PartialView("_ListAllConcert", homeService.GetAllConcerts());
+        if (filterDate != null && filterDate?.Date <= DateTime.Now.Date)
+        {
+            return Json( new { success = false, messgae = "Can not filter past concerts" } );
+        }
+        return PartialView("_ListAllConcert", homeService.GetAllConcerts(filterDate, search));
     }
 
     public IActionResult GetAllBookings(string filter)

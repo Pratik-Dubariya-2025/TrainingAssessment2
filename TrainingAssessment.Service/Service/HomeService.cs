@@ -178,22 +178,9 @@ public class HomeService : IHomeService
 
         return bookTicketViewModel;
     }
-    public List<ConcertViewModel> GetAllConcerts()
-    {
-        List<ConcertViewModel> concerts = unitOfWork.ConcertRepository
-            .GetAll(c => new ConcertViewModel{
-                Id = c.Id,
-                Title = c.Title,
-                ConcertTime = c.ConcertTime,
-                TicketPrice = c.TicketPrice,
-                TotalSeats = c.TotalSeats,
-                ArtistName = c.ArtistName,
-                AvailableSeats = c.AvailableSeats,
-                Venue = c.Venue,
-                Description = c.Description
-            }, c => !c.IsDeleted && c.ConcertTime.Date > DateTime.Now.Date);
-        
-        return concerts;
+    public List<ConcertViewModel> GetAllConcerts(DateTime? filterDate, string? search)
+    {   
+        return unitOfWork.ConcertRepository.GetFilteredConcerts(filterDate, search);
     }
 
     public List<BookTicketViewModel> GetAllBooking(string filter)

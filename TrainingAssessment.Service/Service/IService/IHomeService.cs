@@ -9,6 +9,6 @@ public interface IHomeService
     (bool, string) BuyConcertTicket(BookTicketViewModel bookTicketViewModel);
     ConcertViewModel? GetConcertViewModelById(int Id);
     BookTicketViewModel? GetBookTicketViewModelByConcertId(int concertId);
-    List<ConcertViewModel> GetAllConcerts();
+    List<ConcertViewModel> GetAllConcerts(DateTime? filterDate, string? search);
     List<BookTicketViewModel> GetAllBooking(string filter);
 }
