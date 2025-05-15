@@ -1,0 +1,66 @@
+@model List<ConcertViewModel>;
+
+<div class="container-fluid">
+    @if(Model.Count > 0)
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 d-flex align-items-center gap-3 flex-wrap">
+            @foreach(ConcertViewModel concert in Model)
+            {
+                string backgroundColor = "#f1f1f1";
+
+                <a class="nav-link w-100 card p-2 bg-opacity-25 @backgroundColor" 
+                    style="max-width: 200px; height:350px; cursor: pointer;">
+                    <div class="d-flex h-100 flex-column justify-content-start align-items-start gap-2">
+                        <div class="p-1">
+                            <img src="~/images/download.jpeg" class="w-100 h-100" alt="">
+                        </div>
+                        <div><span class="fw-medium">Title: </span>@concert.Title</div>
+                        <div><span class="fw-medium">Artist: </span> @concert.ArtistName</div>
+                        <div><span class="fw-medium">Venue: </span>@concert.Venue</div>
+                        <div class="w-100 d-flex gap-2 justify-content-start align-items-center">
+                            <div><span class="fw-bold"><i class="bi bi-people"></i></span> <span class="fw-medium">Total Seats</span></div>
+                            <div>@concert.TotalSeats</div>
+                        </div>
+                        <div class="w-100 d-flex justify-content-start align-items-center gap-2">
+                            <div class="fw-bold"><i class="bi bi-stopwatch"></i></div>
+                            <div class="text-end" >@concert.ConcertTime.ToString("g")</div>
+                        </div>
+                        <div class="w-100 d-flex justify-content-between align-items-center gap-2">
+                            <button class="w-100 btn btn-primary" onclick="OpenBuyTicketModal(@concert.Id)">Buy</button>
+                            <button class="w-100 btn btn-secondary" onclick="OpenConcertDetailModal(@concert.Id)">Details</button>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center"><h1>There are no concerts</h1></div>
+    }
+</div>
+
+<script>
+
+    function OpenConcertDetailModal(Id) {
+        $.ajax({
+            url:'/Home/OpenConcertDetailModal',
+            type:'GET',
+            data:{ Id },
+            success: function (data){
+                if(data.success!=false){
+                    $("#modalContainer").html(data);
+                    var myModal = new bootstrap.Modal(document.getElementById('concertDetails'));
+                    myModal.show();
+                } 
+            },
+            error: function(xhr,status,error){
+                toastr.error(error);
+            }
+        });
+    }
+
+    $(document).ready(function(){
+
+    });
+</script>

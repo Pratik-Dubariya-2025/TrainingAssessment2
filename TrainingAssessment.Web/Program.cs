@@ -1,10 +1,6 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Tokens;
-using TrainingAssessment.Helper.JwtService;
 using TrainingAssessment.Models.Data;
 using TrainingAssessment.Repository.Repository;
 using TrainingAssessment.Repository.Repository.IRepository;
@@ -21,6 +17,7 @@ builder.Services.AddDbContext<TrainingAssessmentDbContext>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
     options.LoginPath = "/Login";

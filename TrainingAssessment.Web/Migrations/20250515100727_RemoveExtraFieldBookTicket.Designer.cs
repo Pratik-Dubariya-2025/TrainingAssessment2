@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TrainingAssessment.Models.Data;
@@ -11,9 +12,11 @@ using TrainingAssessment.Models.Data;
 namespace TrainingAssessment.Web.Migrations
 {
     [DbContext(typeof(TrainingAssessmentDbContext))]
-    partial class TrainingAssessmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515100727_RemoveExtraFieldBookTicket")]
+    partial class RemoveExtraFieldBookTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

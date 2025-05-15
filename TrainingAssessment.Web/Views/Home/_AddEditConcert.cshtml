@@ -1,0 +1,119 @@
+@model ConcertViewModel;
+
+<div class="modal" id="addEditConcert" tabindex="-1" aria-labelledby="add-category" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title fw-bolder" style="color: #01010199;" id="exampleModalLabel">
+                    @(Model == null || Model.Id == null || Model.Id == 0 ? "Add " : "Update") Concert
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addEditConcertForm" method="post">
+                <div class="modal-body container-fluid">
+                    <div class="row row-cols-1">
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" asp-for="Title" class="form-control"/>
+                                <label asp-for="Title">Title</label>
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" asp-for="ArtistName" class="form-control"/>
+                                <label asp-for="ArtistName">Artist Name</label>
+                                <span class="text-danger" asp-validation-for="ArtistName"></span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" asp-for="Venue" class="form-control"/>
+                                <label asp-for="Venue">Venue</label>
+                                <span class="text-danger" asp-validation-for="Venue"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-3">
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="date" class="form-control" id="concertTime"/>
+                                <label asp-for="ConcertTime">Concert Time</label>
+                                <span class="text-danger" asp-validation-for="ConcertTime"></span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="number" asp-for="TicketPrice" class="form-control"/>
+                                <label asp-for="TicketPrice">Ticket Price</label>
+                                <span class="text-danger" asp-validation-for="TicketPrice"></span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="number" asp-for="TotalSeats" class="form-control"/>
+                                <label asp-for="TotalSeats">Total Seats</label>
+                                <span class="text-danger" asp-validation-for="TotalSeats"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1">
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <textarea type="date" class="form-control" asp-for="Description"></textarea>
+                                <label asp-for="Description">Description</label>
+                                <span class="text-danger" asp-validation-for="Description"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-end align-items-center">
+                    <input type="hidden" asp-for="Id"/>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+<script>
+    $(document).ready(function (){
+        $("#addEditConcertForm").submit(function(event){
+            event.preventDefault();
+            $(this).validate();
+            if($(this).valid() !== true) {
+                return;
+            }
+            const formData = new FormData(this);
+            const concertTime = $("#concertTime").val();
+            const utcTime = new Date(concertTime);
+            console.log(utcTime);
+            formData.append("ConcertTime",concertTime);
+
+            $.ajax({
+                url: '/Home/AddEditConert',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.success !== false) {
+                        GetAllConcerts();
+                        toastr.success(data.message);
+                        $("#addEditConcert").modal('hide');
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function(xhr,status,error){
+                    toastr.error(error);
+                }
+            });
+        });
+    });
+</script>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TrainingAssessment.Models.Data;
@@ -11,9 +12,11 @@ using TrainingAssessment.Models.Data;
 namespace TrainingAssessment.Web.Migrations
 {
     [DbContext(typeof(TrainingAssessmentDbContext))]
-    partial class TrainingAssessmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515090355_AddingDescriptionToConcert")]
+    partial class AddingDescriptionToConcert
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,9 @@ namespace TrainingAssessment.Web.Migrations
                     b.Property<int>("ConcertId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("ConcertTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -46,14 +52,24 @@ namespace TrainingAssessment.Web.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValueSql("false");
 
+                    b.Property<decimal>("TicketPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
+
+                    b.Property<int>("TotalSeats")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TotalTicketBuy")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Venue")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -148,14 +164,14 @@ namespace TrainingAssessment.Web.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 15, 10, 7, 27, 313, DateTimeKind.Utc).AddTicks(133),
+                            CreatedAt = new DateTime(2025, 5, 15, 9, 3, 55, 798, DateTimeKind.Utc).AddTicks(5180),
                             IsDeleted = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 15, 10, 7, 27, 313, DateTimeKind.Utc).AddTicks(136),
+                            CreatedAt = new DateTime(2025, 5, 15, 9, 3, 55, 798, DateTimeKind.Utc).AddTicks(5184),
                             IsDeleted = false,
                             Name = "User"
                         });

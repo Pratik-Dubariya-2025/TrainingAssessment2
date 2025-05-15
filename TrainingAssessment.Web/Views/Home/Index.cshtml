@@ -3,36 +3,72 @@
 }
 
 <div class="container">
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                <th scope="col">#ID</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>As</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>ABC</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td>Larry the Bird</td>
-                <td>ABC</td>
-                <td>ABC</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="w-100 d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1>Concerts</h1>
+        </div>
+        <div>
+            <button class="btn btn-primary" onclick="OpenAddEditConcertModal()">+ Concert</button>
+        </div>
     </div>
+    <div id="listAllConcerts" class="w-100 p-2"></div>
 </div>
+
+<div id="modalContainer"></div>
+
+<script>
+
+    function OpenAddEditConcertModal(){
+        $.ajax({
+            url:'/Home/OpenAddEditConcertModal',
+            type:'GET',
+            success: function (data){
+                if(data.success!=false){
+                    $("#modalContainer").html(data);
+                    var myModal = new bootstrap.Modal(document.getElementById('addEditConcert'));
+                    myModal.show();
+                } 
+            },
+            error: function(xhr,status,error){
+                toastr.error(error);
+            }
+        });
+    }
+
+    function OpenBuyTicketModal(Id) {
+        $.ajax({
+            url:'/Home/OpenBuyTicketModal',
+            type:'GET',
+            data:{ Id },
+            success: function (data){
+                if(data.success!=false){
+                    $("#modalContainer").html(data);
+                    var myModal = new bootstrap.Modal(document.getElementById('buyTicket'));
+                    myModal.show();
+                } 
+            },
+            error: function(xhr,status,error){
+                toastr.error(error);
+            }
+        });
+    }
+
+    function GetAllConcerts(){
+        $.ajax({
+            url: '/Home/GetAllConcerts',
+            type: 'GET',
+            success: function (data) {
+                if(data.success !== false){
+                    $("#listAllConcerts").html(data);
+                }
+            },
+            error: function(xhr,status,error){
+                toastr.error(error);
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        GetAllConcerts();
+    });
+</script>
