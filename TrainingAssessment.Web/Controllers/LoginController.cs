@@ -51,6 +51,28 @@ public class LoginController : Controller
         return RedirectToAction("Index","Home");
     }
 
+    [HttpGet]
+    public IActionResult SignUp()
+    {
+        return View();
+    }
+
+    [HttpPost] 
+    public IActionResult SignUp(UserViewModel userView)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(userView);
+        }
+        (bool success, string message) = loginService.SignUp(userView);
+        TempData[success ? "success" : "error"] = message;
+        if (!success)
+        {
+            return View(userView);
+        }
+        return RedirectToAction("Index");
+    }
+
     [Authorize]
     public async Task<IActionResult> Logout()
     {

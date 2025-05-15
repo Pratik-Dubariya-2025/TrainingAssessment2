@@ -14,18 +14,19 @@
             asp-action="Index" asp-controller="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
             <div class="w-100 form-outline position-relative">
                 <input type="text" class="form-control" id="login-email" asp-for="Email" placeholder="Email*" />
-                <i class="bi bi-person-fill"></i>
                 <span class="ms-2 text-danger" asp-validation-for="Email"></span>
             </div>
             <div class="w-100 form-outline position-relative ">
                 <input type="password" class="form-control" asp-for="Password" id="password" placeholder="Password*" />
-                <i id="toggle-eye" class="bi bi-eye-slash-fill"></i>
                 <span class="ms-2 text-danger" asp-validation-for="Password"></span>
             </div>
-            <div class="mb-3 w-100 d-flex justify-content-start align-items-center">
+            <div class="mb-3 w-100 d-flex justify-content-between align-items-center">
                 <div class="w-100 input-group d-flex align-items-center">
                     <input class="me-1" type="checkbox" asp-for="RememberMe" value="true" />
                     <label class="" asp-for="RememberMe">Remember Me</label>
+                </div>
+                <div class="w-100 d-flex justify-content-end align-items-center">
+                    <a asp-action="SignUp">Register here</a>
                 </div>
             </div>
             <input type="hidden" value="@ViewBag.returnUrl" name="returnUrl"/>

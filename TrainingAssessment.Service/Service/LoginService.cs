@@ -49,6 +49,40 @@ public class LoginService : ILoginService
         return (true, $"Welcome back, {user.Username}");
     }
 
+    public (bool, string) SignUp(UserViewModel userView)
+    {
+        User? user = unitOfWork.UserRepository
+            .GetFirstOrDefault(u => u.Email.ToLower() == userView.Email.ToLower());
+        
+        if (user != null)
+        {
+            return (false, "Email already exist");
+        }
+
+        user = unitOfWork.UserRepository
+            .GetFirstOrDefault(u => u.Username == userView.Username);
+        
+        if (user != null)
+        {
+            return (false, "Username already exist");
+        }
+
+        User newUser = new()
+        {
+            FirstName = userView.FirstName,
+            LastName = userView.LastName,
+            Username = userView.Username,
+            Email = userView.Email.ToLower(),
+            RoleId = 2,
+            Password = HashPassword(userView.Password)
+        };
+
+        unitOfWork.UserRepository.Add(newUser);
+        unitOfWork.Save();
+
+        return (true, "Signup successful, Signup to buy tickets");
+    }
+
     public int GetUserId()
     {
         int UserId =  int.Parse(httpContextAccessor?.HttpContext?.User?.FindFirst("Id")?.Value ?? "0");
