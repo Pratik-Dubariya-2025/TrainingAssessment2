@@ -16,6 +16,88 @@ public class Repository<T> : IRepository<T> where T : class
         DbSet = dbContext.Set<T>();
     }
 
+    public bool Add(T entity)
+    {
+        try
+        {
+            DbSet.Add(entity);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+    public bool AddRange(IEnumerable<T> entities)
+    {
+        try
+        {
+            DbSet.AddRange(entities);
+            dbContext.SaveChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+    public bool Update(T entity)
+    {
+        try
+        {
+            DbSet.Update(entity);
+            dbContext.SaveChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+    public bool UpdateRange(IEnumerable<T> entities)
+    {
+        try
+        {
+            DbSet.UpdateRange(entities);
+            dbContext.SaveChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+    public bool Remove(T entity)
+    {
+        try
+        {
+            DbSet.Remove(entity);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+    public bool RemoveRange(IEnumerable<T> entities)
+    {
+        try
+        {
+            DbSet.RemoveRange(entities);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+
     public T? GetFirstOrDefault(Expression<Func<T, bool>> where) =>
         DbSet.Where(where).FirstOrDefault();
 

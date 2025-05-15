@@ -12,6 +12,8 @@ public class Concert
     public string Title { get; set; } = null!;
     public string ArtistName { get; set; } = null!;
     public string Venue { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    [Column(TypeName = "timestamp without time zone")]
     public DateTime ConcertTime { get; set; }
     public decimal TicketPrice { get; set; }
     public int TotalSeats { get; set; }

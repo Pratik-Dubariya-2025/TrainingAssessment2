@@ -38,6 +38,7 @@ public class LoginService : ILoginService
         {
             new(ClaimTypes.Name, user.Username),
             new(ClaimTypes.Email, user.Email),
+            new("Id", user.Id.ToString()),
             new(ClaimTypes.Role, user.RoleId.ToString())
         };
         bool IsSessionSet = await SetSession(claims, loginViewModel.RememberMe);
@@ -46,6 +47,12 @@ public class LoginService : ILoginService
             return (false, "Error while setting session");
         }
         return (true, $"Welcome back, {user.Username}");
+    }
+
+    public int GetUserId()
+    {
+        int UserId =  int.Parse(httpContextAccessor?.HttpContext?.User?.FindFirst("Id")?.Value ?? "0");
+        return UserId;
     }
 
     public bool VerifyPassword(string? password, string hashPassword)

@@ -15,10 +15,6 @@ public class BookTicket
     public int TotalTicketBuy { get; set; }
     public decimal DiscountPrice { get; set; }
     public decimal TotalPrice { get; set; }
-    public string Venue { get; set; } = null!;
-    public DateTime ConcertTime { get; set; }
-    public decimal TicketPrice { get; set; }
-    public int TotalSeats { get; set; }
     public bool IsDeleted { get; set; } = false;
     public DateTime CreatedAt { get; set; }
     public virtual User User  { get; set; } = null!;

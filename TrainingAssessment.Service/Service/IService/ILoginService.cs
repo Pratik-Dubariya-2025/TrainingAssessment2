@@ -4,5 +4,8 @@ namespace TrainingAssessment.Service.Service.IService;
 
 public interface ILoginService
 {
+    int GetUserId();
     Task<(bool, string)> Login(LoginViewModel loginViewModel);
+    bool VerifyPassword(string? password, string hashPassword);
+    string HashPassword(string? password);
 }
